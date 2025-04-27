@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Digital Habit Builder</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <button class="sidebar-toggle" id="calendar-toggle">
+        <i class="fas fa-calendar-alt"></i>
+    </button>
+
+    <div class="calendar-sidebar">
+        <div class="sidebar-content">
+            <h2><i class="fas fa-calendar-alt"></i> Habits Calendar</h2>
+            <div class="calendar-controls">
+                <button id="prev-month"><i class="fas fa-chevron-left"></i></button>
+                <h3 id="current-month">Month Year</h3>
+                <button id="next-month"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="calendar-grid">
+                <div class="calendar-header">
+                    <div>S</div>
+                    <div>M</div>
+                    <div>T</div>
+                    <div>W</div>
+                    <div>T</div>
+                    <div>F</div>
+                    <div>S</div>
+                </div>
+                <div class="calendar-days" id="calendar-days">
+                    <!-- Calendar days will be dynamically added here -->
+                </div>
+            </div>
+            <div class="calendar-legend">
+                <span class="legend-item"><i class="fas fa-check-circle" style="color: var(--success-color)"></i> Completed</span>
+                <span class="legend-item"><i class="fas fa-circle" style="color: var(--primary-color)"></i> Partial</span>
+                <span class="legend-item"><i class="fas fa-times-circle" style="color: var(--danger-color)"></i> Missed</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h1>Habit Tracker</h1>
+            </div>
+            <p class="tagline">Build better habits, one day at a time</p>
+        </header>
+
+        <main>
+            <section class="habit-form">
+                <div class="input-group">
+                    <input type="text" id="habit-input" placeholder="Enter a new habit...">
+                    <button id="add-habit" class="btn-primary">
+                        <i class="fas fa-plus"></i> Add Habit
+                    </button>
+                </div>
+            </section>
+
+            <section class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-fire"></i>
+                    <h3>Current Streak</h3>
+                    <p id="current-streak">0 days</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="streak-progress"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-calendar-check"></i>
+                    <h3>Habits Today</h3>
+                    <p id="habits-today">0/0</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="today-progress"></div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-trophy"></i>
+                    <h3>Best Streak</h3>
+                    <p id="best-streak">0 days</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="best-progress"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="goals-container">
+                <h2><i class="fas fa-bullseye"></i> Habit Goals</h2>
+                <div class="goals-grid">
+                    <div class="goal-card">
+                        <h3>Daily Goal</h3>
+                        <div id="daily-goal" class="goal-content">
+                            <span class="goal-progress">0/3</span>
+                            <input type="number" class="goal-input" data-goal-type="daily" value="3" min="0">
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="daily-progress"></div>
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <h3>Weekly Goal</h3>
+                        <div id="weekly-goal" class="goal-content">
+                            <span class="goal-progress">0/15</span>
+                            <input type="number" class="goal-input" data-goal-type="weekly" value="15" min="0">
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="weekly-progress"></div>
+                        </div>
+                    </div>
+                    <div class="goal-card">
+                        <h3>Monthly Goal</h3>
+                        <div id="monthly-goal" class="goal-content">
+                            <span class="goal-progress">0/60</span>
+                            <input type="number" class="goal-input" data-goal-type="monthly" value="60" min="0">
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="monthly-progress"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="progress-graph">
+                <h2><i class="fas fa-chart-line"></i> Progress Overview</h2>
+                <div class="graph-controls">
+                    <select id="graph-timeframe">
+                        <option value="week">Last 7 Days</option>
+                        <option value="month">Last 30 Days</option>
+                        <option value="year">Last 12 Months</option>
+                    </select>
+                    <select id="graph-habit">
+                        <option value="all">All Habits</option>
+                        <!-- Habit options will be dynamically added here -->
+                    </select>
+                    <div class="graph-legend">
+                        <span class="legend-item"><i class="fas fa-square" style="color: var(--primary-color)"></i> Completed</span>
+                        <span class="legend-item"><i class="fas fa-square" style="color: var(--secondary-color)"></i> Total</span>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="progressChart"></canvas>
+                </div>
+            </section>
+
+            <section class="habits-controls">
+                <div class="filter-options">
+                    <button class="filter-btn active" data-filter="all">
+                        <i class="fas fa-list"></i> All Habits
+                    </button>
+                    <button class="filter-btn" data-filter="active">
+                        <i class="fas fa-fire"></i> Active
+                    </button>
+                    <button class="filter-btn" data-filter="completed">
+                        <i class="fas fa-check-circle"></i> Completed
+                    </button>
+                </div>
+                <div class="sort-options">
+                    <select id="sort-habits">
+                        <option value="name">
+                            <i class="fas fa-sort-alpha-down"></i> Sort by Name
+                        </option>
+                        <option value="streak">
+                            <i class="fas fa-sort-numeric-down"></i> Sort by Streak
+                        </option>
+                        <option value="date">
+                            <i class="fas fa-sort-amount-down"></i> Sort by Date
+                        </option>
+                    </select>
+                </div>
+            </section>
+
+            <section id="habits-list" class="habits-list">
+                <!-- Habits will be dynamically added here -->
+            </section>
+        </main>
+
+        <footer>
+            <p>Built with <i class="fas fa-heart"></i> for better habits</p>
+            <div class="social-links">
+                <a href="#" title="Share on Twitter"><i class="fab fa-twitter"></i></a>
+                <a href="#" title="Share on Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="#" title="Share on LinkedIn"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html> 
